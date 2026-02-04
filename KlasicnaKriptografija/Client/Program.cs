@@ -12,9 +12,9 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("********");
+            Console.WriteLine("***********************");
             Console.WriteLine("         CLIENT       ");
-            Console.WriteLine("********");
+            Console.WriteLine("***********************");
             Console.WriteLine("\n");
             Console.WriteLine("Izaberite protokol za komunikaciju:");
             Console.WriteLine("1. TCP");
@@ -174,4 +174,5 @@ namespace Client
 
 
     }
+}
 }
