@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contract
 {
-    internal class HomofoniAlgoritam
+    public class HomofoniAlgoritam
     {
         private string tekst;
         private string kljuc;

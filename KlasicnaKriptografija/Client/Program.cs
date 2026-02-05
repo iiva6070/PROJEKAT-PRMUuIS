@@ -57,7 +57,7 @@ namespace Client
                 {
                     case "1":
                         algoritam = "Homofonsko";
-                        HomofonoSifrovanje homo = new HomofonoSifrovanje("KRIPTOGRAFIJA");
+                        HomofoniAlgoritam homo = new HomofoniAlgoritam("KRIPTOGRAFIJA");
                         kljuc = homo.Kljuc;
                         break;
                     case "2":
