@@ -46,11 +46,11 @@ namespace Contract
         }
 
 
-        /*public PlejferovAlgoritam()
+        public PlejferovAlgoritam()
         {
             this.matrica = new char[5, 5];
             this.pozicije = new Dictionary<char, (int, int)>();
-        }*/
+        }
 
 
 

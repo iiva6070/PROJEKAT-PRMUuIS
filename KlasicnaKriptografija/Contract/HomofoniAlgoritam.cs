@@ -42,12 +42,13 @@ namespace Contract
             desiforvanjeMapa = new Dictionary<string, char>();
             GenerisiKljuc();
         }
-        /*public HomofonoSifrovanje()
+
+        public HomofoniAlgoritam()
         {
             this.random = new Random();
-            sifraNaBrojeve = new Dictionary<char, List<string>>();
-            brojeveNaSifru = new Dictionary<string, char>();
-        }*/
+            sifrovanjeMapa = new Dictionary<char, List<string>>();
+            desiforvanjeMapa = new Dictionary<string, char>();
+        }
 
 
         private void ParsirajKljuc(string kljucString)

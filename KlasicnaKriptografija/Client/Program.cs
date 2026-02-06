@@ -13,9 +13,9 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("***********************");
+            Console.WriteLine("*********");
             Console.WriteLine("         CLIENT       ");
-            Console.WriteLine("***********************");
+            Console.WriteLine("*********");
             Console.WriteLine("\n");
             Console.WriteLine("Izaberite protokol za komunikaciju:");
             Console.WriteLine("1. TCP");
@@ -103,7 +103,7 @@ namespace Client
                     }
 
 
-                    string sifrovanaPoruka = SifrujPoruku(poruka, algoritam, kljuc);
+                    string sifrovanaPoruka = SifrovanjePoruke(poruka, algoritam, kljuc);
                     Console.WriteLine($"[CLIENT] Šifrovana poruka: {sifrovanaPoruka}");
 
 
@@ -117,7 +117,7 @@ namespace Client
                     Console.WriteLine($"[CLIENT] Primljen šifrovani odgovor: {sifrovanOdgovor}");
 
 
-                    string desifrovaniOdgovor = DesifrujPoruku(sifrovanOdgovor, algoritam, kljuc);
+                    string desifrovaniOdgovor = DesifrovanjePoruke(sifrovanOdgovor, algoritam, kljuc);
                     Console.WriteLine($"[CLIENT] Dešifrovani odgovor: {desifrovaniOdgovor}\n");
                 }
 
@@ -172,8 +172,62 @@ namespace Client
             }
         }
 
+        static string SifrovanjePoruke(string tekst, string algoritam, string kljuc)
+        {
+            switch (algoritam.ToLower())
+            {
+                case "homofonski":
+                    {
+                        HomofoniAlgoritam homo = new HomofoniAlgoritam();
+                        homo.Kljuc = kljuc;
+                        homo.Tekst = tekst;
+                        return homo.Enkripcija();
+                    }
+                case "plejfer":
+                    {
+                        PlejferovAlgoritam plejfer = new PlejferovAlgoritam();
+                        plejfer.Kljuc = kljuc;
+                        plejfer.Teskt = tekst;
+                        return plejfer.Enkripcija();
+                    }
+                case "transpozicija":
+                    {
+                        TranspozicijaMatrica transp = new TranspozicijaMatrica();
+                        transp.Kljuc = kljuc;
+                        transp.Tekst = tekst;
+                        return transp.Enkripcija();
+                    }
+                default:
+                    return tekst;
+            }
+        }
 
+        static string DesifrovanjePoruke(string sifrovana, string algoritam, string kljuc)
+        {
+            switch (algoritam.ToLower())
+            {
+                case "homofonsko":
+                    {
+                        HomofoniAlgoritam homo = new HomofoniAlgoritam();
+                        homo.Kljuc = kljuc;
+                        return homo.Dekripcija(sifrovana);
+                    }
+                case "plejfer":
+                    {
+                        PlejferovAlgoritam plejfer = new PlejferovAlgoritam();
+                        plejfer.Kljuc = kljuc;
+                        return plejfer.Dekripcija(sifrovana);
+                    }
+                case "transpozicija":
+                    {
+                        TranspozicijaMatrica transp = new TranspozicijaMatrica();
+                        transp.Kljuc = kljuc;
+                        return transp.Dekripcija(sifrovana);
+                    }
+                default:
+                    return sifrovana;
+            }
+        }
 
     }
 }
-

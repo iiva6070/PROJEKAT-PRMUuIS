@@ -45,10 +45,10 @@ namespace Contract
             }
 
 
-            /*public TranspozicijaMatrica()
+            public TranspozicijaMatrica()
             {
-                this.redosledTranspozicije = new List<int>();
-            }*/
+                this.redosledTranspoz = new List<int>();
+            }
 
             private void ParsirajKljuc(string kljucString)
             {
