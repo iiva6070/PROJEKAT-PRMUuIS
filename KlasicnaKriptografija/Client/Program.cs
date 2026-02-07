@@ -14,28 +14,28 @@ namespace Client
         static void Main(string[] args)
         {
             Console.WriteLine("*********");
-            Console.WriteLine("         CLIENT       ");
+            Console.WriteLine(" CLIENT");
             Console.WriteLine("*********");
             Console.WriteLine("\n");
             Console.WriteLine("Izaberite protokol za komunikaciju:");
-            Console.WriteLine("1. TCP");
-            Console.WriteLine("2. UDP");
+            Console.WriteLine("1.TCP protokol");
+            Console.WriteLine("2.UDP protokol");
 
 
             //izbor TCP ili UDP komunikacije
-            string izbor = Console.ReadLine();
+            string komunikacija = Console.ReadLine();
 
-            if (izbor == "1")
+            if (komunikacija == "1")
             {
                 TCPClient();
             }
-            else if (izbor == "2")
+            else if (komunikacija == "2")
             {
                 UDPClient();
             }
             else
             {
-                Console.WriteLine("Nevažeći izbor!");
+                Console.WriteLine("Nevalidna opcija!");
             }
         }
 
@@ -45,19 +45,19 @@ namespace Client
             try
             {
                 Console.WriteLine("\nIzaberite algoritam za šifrovanje poruka:");
-                Console.WriteLine("1. Homofonsko");
-                Console.WriteLine("2. Plejfer");
-                Console.WriteLine("3. Transpozicija matrica");
+                Console.WriteLine("1.Homofonski algoritam");
+                Console.WriteLine("2.Plejferov algoritam");
+                Console.WriteLine("3.Transpozicija matrica");
 
-                string izbor = Console.ReadLine();
+                string opcija = Console.ReadLine();
                 string algoritam = "";
                 string kljuc = "";
 
-                switch (izbor)
+                switch (opcija)
                 {
                     case "1":
                         algoritam = "Homofonsko";
-                        HomofoniAlgoritam homo = new HomofoniAlgoritam("KRIPTOGRAFIJA");
+                        HomofoniAlgoritam homo = new HomofoniAlgoritam("TEST");
                         kljuc = homo.Kljuc;
                         break;
                     case "2":
@@ -81,7 +81,7 @@ namespace Client
                 IPAddress ip = IPAddress.Parse("127.0.0.1");
                 IPEndPoint endPoint = new IPEndPoint(ip, 5000);
 
-                Console.WriteLine("\n[CLIENT] Povezujem se na server...");
+                Console.WriteLine("\n[CLIENT] Klijent se povezuje na server...");
                 klijentSocket.Connect(endPoint);
                 Console.WriteLine("[CLIENT] Klijent je povezan na server!");
 
@@ -94,7 +94,7 @@ namespace Client
 
                 while (true)
                 {
-                    Console.Write("[CLIENT] Unesite poruku: ");
+                    Console.Write("[CLIENT] Unesite poruku koju cete poslati serveru: ");
                     string poruka = Console.ReadLine();
 
                     if (poruka.ToLower() == "izlaz")
@@ -131,6 +131,7 @@ namespace Client
         }
 
 
+        //UDP komunikacija
         static void UDPClient()
         {
             try
@@ -176,7 +177,7 @@ namespace Client
         {
             switch (algoritam.ToLower())
             {
-                case "homofonski":
+                case "homofonsko":
                     {
                         HomofoniAlgoritam homo = new HomofoniAlgoritam();
                         homo.Kljuc = kljuc;

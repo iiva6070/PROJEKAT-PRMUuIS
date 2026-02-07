@@ -209,22 +209,51 @@ namespace Contract
 
         private string PrepraviPoruku(string poruka)
         {
-            StringBuilder rezultat = new StringBuilder();
+            StringBuilder cist = new StringBuilder();
+
             foreach (char c in poruka.ToUpper())
             {
                 if (char.IsLetter(c))
                 {
-                    rezultat.Append(c);
+                    if (c == 'J')
+                        cist.Append('I');
+                    else
+                        cist.Append(c);
                 }
             }
 
+            StringBuilder rezultat = new StringBuilder();
+            int i = 0;
+
+            while (i < cist.Length)
+            {
+                char a = cist[i];
+                char b;
+
+                if (i + 1 < cist.Length)
+                    b = cist[i + 1];
+                else
+                    b = 'X';
+
+                if (a == b)
+                {
+                    rezultat.Append(a);
+                    rezultat.Append('X');
+                    i += 1; // BITNO: pomeraš se za 1
+                }
+                else
+                {
+                    rezultat.Append(a);
+                    rezultat.Append(b);
+                    i += 2;
+                }
+            }
 
             if (rezultat.Length % 2 != 0)
-            {
                 rezultat.Append('X');
-            }
 
             return rezultat.ToString();
         }
+
     }
 }

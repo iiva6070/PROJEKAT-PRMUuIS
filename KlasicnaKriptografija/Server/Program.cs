@@ -14,31 +14,33 @@ namespace Server
         static void Main(string[] args)
         {
             Console.WriteLine("********");
-            Console.WriteLine("         SERVER       ");
+            Console.WriteLine(" SERVER");
             Console.WriteLine("********");
-            Console.WriteLine("\n");
+            //Console.WriteLine("\n");
             Console.WriteLine("Izaberite protokol za komunikaciju:");
-            Console.WriteLine("1. TCP");
-            Console.WriteLine("2. UDP");
+            Console.WriteLine("1.TCP protokol");
+            Console.WriteLine("2.UDP protokol");
 
 
-            //izbor TCP ili UDP komunikacije
-            string izbor = Console.ReadLine();
+            // TCP ili UDP komunikacije
+            string komunikacija = Console.ReadLine();
 
-            if (izbor == "1")
+            if (komunikacija == "1")
             {
                 TCPServer();
             }
-            else if (izbor == "2")
+            else if (komunikacija == "2")
             {
                 UDPServer();
             }
             else
             {
-                Console.WriteLine("Nevažeći izbor!");
+                Console.WriteLine("Nevalidna opcija!");
             }
         }
 
+
+        //usposatvaljenje TCP komunikacije
         static void TCPServer()
         {
             try
@@ -54,7 +56,7 @@ namespace Server
 
                 //ispis IP adrese i broj porta na kojem očekujemo poruke/zahteve za uspostavu veze.
                 Console.WriteLine($"\n[SERVER] TCP server pokrenut na: {ipAdresa}:{port}!");
-                Console.WriteLine("[SERVER] Čekam na klijente...\n");
+                Console.WriteLine("[SERVER] Čekam klijente...\n");
 
                 List<NacinKomunikacije> klijenti = new List<NacinKomunikacije>();
 
@@ -79,13 +81,13 @@ namespace Server
                             Console.WriteLine($"[SERVER] Primljene informacije: {informacije}");
 
 
-                            string[] delovi = informacije.Split('|');
-                            string algoritam = delovi[0];
-                            string kljuc = delovi.Length > 1 ? delovi[1] : "";
+                            string[] dijelovi = informacije.Split('|');
+                            string algoritam = dijelovi[0];
+                            string kljuc = dijelovi.Length > 1 ? dijelovi[1] : "";
 
 
-                            NacinKomunikacije nacinKom = new NacinKomunikacije(klijentSocket, algoritam, kljuc);
-                            klijenti.Add(nacinKom);
+                            NacinKomunikacije nacin = new NacinKomunikacije(klijentSocket, algoritam, kljuc);
+                            klijenti.Add(nacin);
 
                             Console.WriteLine($"[SERVER] Klijent koristi algoritam: {algoritam}");
                         }
@@ -105,7 +107,7 @@ namespace Server
                                     if (primljeno > 0)
                                     {
                                         string sifrovanaPorukaUlaz = Encoding.UTF8.GetString(buffer, 0, primljeno);
-                                        Console.WriteLine($"[SERVER] Primljena šifrovana poruka od  klijenta: {klijentSocket.RemoteEndPoint}: {sifrovanaPorukaUlaz}");
+                                        Console.WriteLine($"[SERVER] Šifrovana poruka primjeljan od strane klijenta: {klijentSocket.RemoteEndPoint}: {sifrovanaPorukaUlaz}");
 
 
                                         string desifrovana = DesifrovanjePoruke(sifrovanaPorukaUlaz, klijenti[i]);
@@ -115,12 +117,12 @@ namespace Server
                                         string odgovor = "Poruka primljena: " + desifrovana;
 
 
-                                        string sifrovanOdgovor = SifrovanjePoruke(odgovor, klijenti[i]);
+                                        string sifrovanOdg = SifrovanjePoruke(odgovor, klijenti[i]);
 
 
-                                        byte[] bufferOdgovor = Encoding.UTF8.GetBytes(sifrovanOdgovor);
+                                        byte[] bufferOdgovor = Encoding.UTF8.GetBytes(sifrovanOdg);
                                         klijentSocket.Send(bufferOdgovor);
-                                        Console.WriteLine($"[SERVER] Šifrovani odgovor poslаt klijentu: {sifrovanOdgovor}\n");
+                                        Console.WriteLine($"[SERVER] Šifrovani odgovor poslаt klijentu od strane servera: {sifrovanOdg}\n");
                                     }
                                     else
                                     {
@@ -146,10 +148,12 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[SERVER] Greška pri pokretanju servera: {ex.Message}");
+                Console.WriteLine($"[SERVER] Greška pri pokretanju TCP servera: {ex.Message}");
             }
         }
 
+
+        //uspostavljanje UDP komunikacije
         static void UDPServer()
         {
             try
@@ -174,10 +178,10 @@ namespace Server
                         int primljeno = udpSocket.ReceiveFrom(buffer, ref remoteEndPoint);
 
                         string poruka = Encoding.UTF8.GetString(buffer, 0, primljeno);
-                        Console.WriteLine($"[SERVER] Datagram primljen od {remoteEndPoint}: {poruka}");
+                        Console.WriteLine($"[SERVER] Datagram primljen od klijenta :{remoteEndPoint}: {poruka}");
 
 
-                        string odgovor = "Server primio: " + poruka;
+                        string odgovor = "Server primio poruku: " + poruka;
                         byte[] odgovorBuffer = Encoding.UTF8.GetBytes(odgovor);
                         udpSocket.SendTo(odgovorBuffer, remoteEndPoint);
                         Console.WriteLine($"[SERVER] Odgovor poslаt klijentu\n");
@@ -194,56 +198,58 @@ namespace Server
             }
         }
 
-
-        static string DesifrovanjePoruke(string sifrovana, NacinKomunikacije nacinKom)
+        //funkcije za desifrovanje i slanje sifrovanih poruka klijentu
+        static string DesifrovanjePoruke(string sifrovanaPor, NacinKomunikacije nacin)
         {
-            switch (nacinKom.Algoritam.ToLower())
+            switch (nacin.Algoritam.ToLower())
             {
-                case "homofonski":
+                case "homofonsko":
                     {
                         HomofoniAlgoritam homo = new HomofoniAlgoritam();
-                        homo.Kljuc = nacinKom.Kljuc;
-                        return homo.Dekripcija(sifrovana);
+                        homo.Kljuc = nacin.Kljuc;
+                        return homo.Dekripcija(sifrovanaPor);
                     }
                 case "plejfer":
                     {
                         PlejferovAlgoritam plejfer = new PlejferovAlgoritam();
-                        plejfer.Kljuc = nacinKom.Kljuc;
-                        return plejfer.Dekripcija(sifrovana);
+                        plejfer.Kljuc = nacin.Kljuc;
+                        return plejfer.Dekripcija(sifrovanaPor);
                     }
                 case "transpozicija":
                     {
                         TranspozicijaMatrica transp = new TranspozicijaMatrica();
-                        transp.Kljuc = nacinKom.Kljuc;
-                        return transp.Dekripcija(sifrovana);
+                        transp.Kljuc = nacin.Kljuc;
+                        return transp.Dekripcija(sifrovanaPor);
                     }
                 default:
-                    return sifrovana;
+                    return sifrovanaPor;
             }
         }
 
-        static string SifrovanjePoruke(string tekst, NacinKomunikacije nacinKom)
+
+
+        static string SifrovanjePoruke(string tekst, NacinKomunikacije nacin)
         {
-            switch (nacinKom.Algoritam.ToLower())
+            switch (nacin.Algoritam.ToLower())
             {
-                case "homofonski":
+                case "homofonsko":
                     {
                         HomofoniAlgoritam homo = new HomofoniAlgoritam();
-                        homo.Kljuc = nacinKom.Kljuc;
+                        homo.Kljuc = nacin.Kljuc;
                         homo.Tekst = tekst;
                         return homo.Enkripcija();
                     }
                 case "plejfer":
                     {
                         PlejferovAlgoritam plejfer = new PlejferovAlgoritam();
-                        plejfer.Kljuc = nacinKom.Kljuc;
+                        plejfer.Kljuc = nacin.Kljuc;
                         plejfer.Teskt = tekst;
                         return plejfer.Enkripcija();
                     }
                 case "transpozicija":
                     {
                         TranspozicijaMatrica transp = new TranspozicijaMatrica();
-                        transp.Kljuc = nacinKom.Kljuc;
+                        transp.Kljuc = nacin.Kljuc;
                         transp.Tekst = tekst;
                         return transp.Enkripcija();
                     }

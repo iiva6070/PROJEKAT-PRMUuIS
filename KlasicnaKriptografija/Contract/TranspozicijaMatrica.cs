@@ -142,9 +142,9 @@ namespace Contract
                 StringBuilder rezultat = new StringBuilder();
                 foreach (int kolona in redosledTranspoz)
                 {
-                    for (int reD = 0; reD < red; red++)
+                    for (int r = 0; r < red; r++)
                     {
-                        rezultat.Append(matrica[red, kolona]);
+                        rezultat.Append(matrica[r, kolona]);
                     }
                 }
 
@@ -177,9 +177,9 @@ namespace Contract
                 for (int k = 0; k < kolona; k++)
                 {
                     int originalnaKolona = redosledTranspoz[k];
-                    for (int reD = 0; reD < red; red++)
+                    for (int r = 0; r < red; r++)
                     {
-                        matrica[reD, originalnaKolona] = sifrovana[poz++];
+                        matrica[r, originalnaKolona] = sifrovana[poz++];
                     }
                 }
 

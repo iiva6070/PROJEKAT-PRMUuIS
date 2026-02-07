@@ -8,13 +8,13 @@ namespace Contract
 {
     public class HomofoniAlgoritam
     {
-        private string tekst;
+        private string tekst; 
         private string kljuc;
         private Dictionary<char, List<string>> sifrovanjeMapa;
         private Dictionary<string, char> desiforvanjeMapa;
         private Random random;
 
-      
+
         public string Tekst
         {
             get { return tekst; }
@@ -29,7 +29,7 @@ namespace Contract
                 kljuc = value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    ParsirajKljuc(value);
+                    ParsiranjeKljuca(value);
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace Contract
             this.random = new Random();
             sifrovanjeMapa = new Dictionary<char, List<string>>();
             desiforvanjeMapa = new Dictionary<string, char>();
-            GenerisiKljuc();
+            GenerisanjeKljuc();
         }
 
         public HomofoniAlgoritam()
@@ -51,7 +51,7 @@ namespace Contract
         }
 
 
-        private void ParsirajKljuc(string kljucString)
+        private void ParsiranjeKljuca(string kljucString)
         {
             sifrovanjeMapa.Clear();
             desiforvanjeMapa.Clear();
@@ -76,12 +76,8 @@ namespace Contract
             }
         }
 
-
-
-
-
         //generisanje ključa za homofonu supstitucionu šifru
-        private void GenerisiKljuc()
+        private void GenerisanjeKljuc()
         {
             sifrovanjeMapa.Clear();
             desiforvanjeMapa.Clear();
@@ -141,8 +137,8 @@ namespace Contract
             }
             kljuc = sb.ToString();
         }
-   
-        
+
+
         public string Enkripcija()
         {
             if (string.IsNullOrEmpty(tekst))
@@ -173,7 +169,7 @@ namespace Contract
             return rezultat.ToString().Trim();
         }
 
-       
+
         public string Dekripcija(string sifrovana)
         {
             if (string.IsNullOrEmpty(sifrovana))
@@ -200,5 +196,6 @@ namespace Contract
 
             return rezultat.ToString();
         }
+
     }
 }
