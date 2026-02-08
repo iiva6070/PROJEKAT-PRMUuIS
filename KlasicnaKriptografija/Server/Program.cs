@@ -114,10 +114,12 @@ namespace Server
                                         Console.WriteLine($"[SERVER] Dešifrovana poruka: {desifrovana}");
 
 
-                                        string odgovor = "Poruka primljena: " + desifrovana;
+                                        //string odgovor = "Poruka primljena: " + desifrovana;
 
 
-                                        string sifrovanOdg = SifrovanjePoruke(odgovor, klijenti[i]);
+                                        //string sifrovanOdg = SifrovanjePoruke(odgovor, klijenti[i]);
+                                        string sifrovanOdg = SifrovanjePoruke(desifrovana, klijenti[i]);
+
 
 
                                         byte[] bufferOdgovor = Encoding.UTF8.GetBytes(sifrovanOdg);
@@ -243,7 +245,7 @@ namespace Server
                     {
                         PlejferovAlgoritam plejfer = new PlejferovAlgoritam();
                         plejfer.Kljuc = nacin.Kljuc;
-                        plejfer.Teskt = tekst;
+                        plejfer.Tekst = tekst;
                         return plejfer.Enkripcija();
                     }
                 case "transpozicija":

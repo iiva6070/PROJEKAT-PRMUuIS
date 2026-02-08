@@ -67,7 +67,7 @@ namespace Client
                         break;
                     case "3":
                         algoritam = "Transpozicija";
-                        TranspozicijaMatrica transp = new TranspozicijaMatrica("KOMUNIKACIJA", 3, 5);
+                        TranspozicijaMatrica transp = new TranspozicijaMatrica("KOMUNIKACIJA", 3, 7);
                         kljuc = transp.Kljuc;
                         break;
                     default:
@@ -118,7 +118,9 @@ namespace Client
 
 
                     string desifrovaniOdgovor = DesifrovanjePoruke(sifrovanOdgovor, algoritam, kljuc);
-                    Console.WriteLine($"[CLIENT] Dešifrovani odgovor: {desifrovaniOdgovor}\n");
+                    //Console.WriteLine($"[CLIENT] Dešifrovani odgovor: {desifrovaniOdgovor}\n");
+                    Console.WriteLine("[CLIENT] Dešifrovani odgovor: PORUKA PRIMLJENA: " + desifrovaniOdgovor);
+
                 }
 
                 klijentSocket.Close();
@@ -188,7 +190,7 @@ namespace Client
                     {
                         PlejferovAlgoritam plejfer = new PlejferovAlgoritam();
                         plejfer.Kljuc = kljuc;
-                        plejfer.Teskt = tekst;
+                        plejfer.Tekst = tekst;
                         return plejfer.Enkripcija();
                     }
                 case "transpozicija":

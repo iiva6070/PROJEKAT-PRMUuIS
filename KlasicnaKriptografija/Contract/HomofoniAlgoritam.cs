@@ -85,58 +85,47 @@ namespace Contract
             string alfabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string samoglasnici = "AEIOU";
 
-
-            int pocetni = random.Next(10, 100);
-            int trenutni = pocetni;
-
+            
+            List<int> dostupniBrojevi = Enumerable.Range(10, 90).ToList();
+            
+            dostupniBrojevi = dostupniBrojevi.OrderBy(x => random.Next()).ToList();
 
             foreach (char slovo in alfabet)
             {
                 List<string> brojevi = new List<string>();
 
-
                 if (samoglasnici.Contains(slovo))
                 {
-                    brojevi.Add(trenutni.ToString());
-                    sifrovanjeMapa[slovo] = brojevi;
-                    desiforvanjeMapa[trenutni.ToString()] = slovo;
-
-
-                    trenutni -= 3;
-                    if (trenutni < 10)
+                    // Samoglasnici dobijaju 2 broja
+                    for (int i = 0; i < 2; i++)
                     {
-                        trenutni = 99;
+                        int broj = dostupniBrojevi[0];
+                        dostupniBrojevi.RemoveAt(0);
+                        brojevi.Add(broj.ToString());
+                        desiforvanjeMapa[broj.ToString()] = slovo;
                     }
-
-
-                    brojevi.Add(trenutni.ToString());
-                    desiforvanjeMapa[trenutni.ToString()] = slovo;
                 }
                 else
                 {
-                    brojevi.Add(trenutni.ToString());
-                    sifrovanjeMapa[slovo] = brojevi;
-                    desiforvanjeMapa[trenutni.ToString()] = slovo;
+                    // Suglasnici dobijaju 1 broj
+                    int broj = dostupniBrojevi[0];
+                    dostupniBrojevi.RemoveAt(0);
+                    brojevi.Add(broj.ToString());
+                    desiforvanjeMapa[broj.ToString()] = slovo;
                 }
 
-
-                trenutni -= 3;
-                if (trenutni < 10)
-                {
-                    trenutni = 99;
-                }
+                sifrovanjeMapa[slovo] = brojevi;
             }
 
-
+            // Generisanje ključa
             StringBuilder sb = new StringBuilder();
             foreach (var kvp in sifrovanjeMapa.OrderBy(x => x.Key))
             {
-                sb.Append($"{kvp.Key}:");
-                sb.Append(string.Join(",", kvp.Value));
-                sb.Append(";");
+                sb.Append($"{kvp.Key}:{string.Join(",", kvp.Value)};");
             }
             kljuc = sb.ToString();
         }
+
 
 
         public string Enkripcija()
